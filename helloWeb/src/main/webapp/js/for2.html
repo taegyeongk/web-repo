@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>js/for2.html</title>
+</head>
+<body>
+    <script>
+        const studentAry = [
+            {sno : 1, sname : '홍길동', score : 80},  //자스에서는 중괄호가 객체 {속성, 값}
+            {sno : 2, sname : '고길동', score : 95},
+            {sno : 3, sname : '오길동', score : 75}
+        ]
+        let sum = avg = 0;
+        studentAry.forEach(function(item, idx, ary){
+           // console.log(item); //전체 배열의 객체 다 출력됨
+           console.log(`이름 : ${item.sname}`)
+           sum += item.score;
+        //    avg = sum / studentAry.length;
+           if(idx == ary.length -1){  //배열은 0부터 시작으로 객체 개수 -1 
+            avg = sum / ary.length;
+            avg = avg.toFixed(2);  //tofixed  = 소수 둘째자리까지 반올림 하여 표시
+           }
+        });
+        console.log(`점수합계:  ${sum} 이고, 평균:  ${avg} 입니다`);
+    </script>
+</body>
+</html>
