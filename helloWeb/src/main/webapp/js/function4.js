@@ -7,7 +7,7 @@ function Member(name, age, height) {
 	this.name = name;
 	this.age = age;
 	this.height = height;
-	this.showInfo = function () {
+	this.showInfo = function() {
 		return `이름은 ${this.name}이고 나이는 ${this.age} 입니다.`;
 	}
 }
@@ -22,22 +22,21 @@ function makeTr(member) { //member 에서 넘어오는 object 타입으로 들�
 	str += '<td>' + member.showInfo() + '</td>';
 	str += '<td><button onclick="this.parentElement.parentElement.remove()">삭제</button></td>';
 	str += '</tr>';
-	
-	if(member.height == null){
-		window.alert("입력된 값이 없습니다.");
-		return str;
-	}
 	return str;
-	
+
 }
 
 
-document.getElementById('saveBtn').onclick = function (e) {
+document.getElementById('saveBtn').onclick = function(e) {
 	console.log(e.target); //event 줄여서 e 
 	let name = document.getElementById('name').value;
 	let age = document.getElementById('age').value;
 	let height = document.getElementById('height').value;
 
+	if(!name || !age || !height){
+		alert('값을 입력하세요');
+		return; //함수종료...
+	}
 	//function Member()..., makeTr(member),
 	const mem = new Member(name, age, height); //인스턴스생성
 	let str = makeTr(mem); //<tr>...</tr> 태그 생성
@@ -51,6 +50,6 @@ document.getElementById('saveBtn').onclick = function (e) {
 	document.getElementById('name').focus();
 
 
-	
-	
+
+
 }
