@@ -6,69 +6,59 @@
 </head>
 <body>
 	<div id="show"></div>
-	<table border="1">
-		<thead>
-			<tr>
-				<th>일</th>
-				<th>월</th>
-				<th>화</th>
-				<th>수</th>
-				<th>목</th>
-				<th>금</th>
-				<th>토</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th>1</th>
-			</tr>
-		</tbody>>
-	</tbody>
-	</table>
+
 	<script>
 		//calendar => table
-		class Calendar{
-			constructor(date){
-				this.date = date;
-			}
-		}
+		const today = new Date();
+		console.log('오늘날짜: ', today.getDate());
 		//makeHead()
-		var num = 1;
-		function makeHead(cal){
-			let dt = '';
-			dt += '<tr>';
-			dt += '<td>' + cal.date + '</td>';
-			dt += '<td>' + cal.date + '</td>';
-			dt += '<td>' + cal.date + '</td>';
-			dt += '<td>' + cal.date + '</td>';
-			dt += '<td>' + cal.date + '</td>';
-			dt += '<td>' + cal.date + '</td>';
-			dt += '<td>' + cal.date + '</td>';
-			dt += '<tr>';
-				return dt;
+		function makeHead(){
+			const days = ['일','월','화','수','목','금','토']
+				return days.reduce((acc,day) => {
+					return acc + '<th>' + day + '</th>';
+				}, '<thead><tr>')
 				
 		}
 		//makeBody()
-		function makeBody(calAry = []){
-			let dt = '';
-			let table = '<table border = "1"><tbody>';
-			table += '<tr>';
-			for(let i = 1; i<8; i++){
-				table += '</tr>';
+		function makeBody(){
+			let tbody = '</thead><tbody><tr>';
+			for(let i = 1; i<=31; i++){
+				console.log(i);
+				//tbody += '<td align="center">'+ i +'</td>';
+				//오늘날짜는 백그라운드:노란색, 폰트 : bold , 일요일은 백그라운드 :빨간색,글자색:노란색
+				
+				let styles = '';
+				if(i%7 == 1){
+					styles = 'background:red; color:yellow;';
+					if(i ==today.getDate()){
+						styles += 'font-weight: bolder';
+						}
+					
+					tbody += '<td style="' + styles + '"align="right">'+ i + '</td>';
+				}else{
+					if(i ==today.getDate()){
+						styles += 'font-weight: bolder; background:yellow;';
+					}
+					tbody += '<td style="' + styles + '"align="right">'+ i + '</td>';
+				}
+				if(i% 7 == 0){
+					
+					tbody += '</tr><tr>';
+				}
+				
 			}
-			table += calAry.reduce((acc, cal)=> acc+this.makeHead(cal),'1');
-			
-			table += '</tbody></table>';
-			this.dt = table;
+			tbody += '</tr></tbody>';
+			return tbody;
 				
 			}
 			
-		console.log(makeHead());
-		console.log(makeBody());
-		//makeCalendar();
 		function makeCalendar(){
-		cal.showPage(document.getElementById('show'));
-		}
+			let thead = makeHead();
+			let tbody = makeBody();
+			let table = '<table border="1">' + thead + tbody + '</table>'
+			document.getElementById('show').innerHTML = table;
+			}
+			makeCalendar();
 		
 		
 	</script>
