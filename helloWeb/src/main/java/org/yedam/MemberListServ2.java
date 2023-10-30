@@ -16,7 +16,7 @@ import org.yedam.service.serviceImpl.MemberServiceImpl;
 /**
  * Servlet implementation class MemberListServ
  */
-@WebServlet("/MemberListServ2")
+@WebServlet("/MemberListServ2")  //주소값
 public class MemberListServ2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

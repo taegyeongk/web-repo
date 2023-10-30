@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>bookList.html</title>
+</head>
+<body>
+	<table border="1">
+		<tr>
+			<th><input type = "checkbox"></th>
+			<th>도서코드</th>
+			<th>도서명</th>
+			<th>저자</th>
+			<th>출판사</th>
+			<th>가격</th>
+			<th>삭제</th>
+		</tr>
+		<tr>
+			
+			<td colspan="2">
+			<button id = "delBtn" onclick="delete">삭제</button></td>
+		</tr>
+		
+		</table>
+		<div id="show"></div>
+		<script>
+			function showInfo(e,obj){
+			console.log(e.target.parentElement);
+			console.log(obj);
+
+			console.log(obj.children);
+			let book_code = record.children[0].textContent;  
+			let book_title = record.children[1].textContent;
+			let book_author = record.children[2].textContent; 
+			let book_press = record.children[3].textContent;  
+			let book_price = record.children[4].textContent;
+			
+			document.getElementById('book_code').value = book_code;
+			document.getElementById('book_title').value = book_title;
+			document.getElementById('book_author').value = book_author;
+			document.getElementById('book_press').value = book_press;
+			document.getElementById('book_price').value = book_price;
+		}
+		</script>
+		<script src="book.js"></script>
+</body>
+</html>

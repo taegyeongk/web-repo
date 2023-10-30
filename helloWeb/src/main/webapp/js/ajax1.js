@@ -24,11 +24,17 @@ xhtp.onload = loadJson;
 
 function loadJson(){
 	console.log(xhtp.responseText);
-	let doc2 = xhtp.responseJson;
-	let records2 = doc2.getElementsByTagName('record2')
-	console.log(records2);
-	
 	let result = JSON.parse(xhtp.responseText);
+	console.log(result);
+	let titles = ["회원번호","비번","이름","연락처"];
+	let dataAry = [];
+	result.forEach(member => {
+		dataAry.push({
+			mid: member.mid, pass: member.pass,
+			name: member.name, phone: member.phone
+		})
+	})
+	result = table.makeTable(titles, dataAry);
 	console.log(result);
 	document.getElementById('show').innerHTML = result;
 }
@@ -55,11 +61,11 @@ function loadXML(){
 	document.getElementById('show').innerHTML = result;
 
 //newMember 값을 활용해서 tbody="list" 추가.
-let tr = '<tr><td>' + newMember.mid + 
-'</td><td>' + newMember.pass + 
-'</td><td>' + newMember.name + 
-'</td><td>' + newMember.phone + '</td></tr>';
-document.getElementById('list').innerHTML += tr;
-//dataset, record 는 부모 자식관계
+	let tr = '<tr><td>' + newMember.mid + 
+	'</td><td>' + newMember.pass + 
+	'</td><td>' + newMember.name + 
+	'</td><td>' + newMember.phone + '</td></tr>';
+	document.getElementById('list').innerHTML += tr;
+	//dataset, record 는 부모 자식관계
 
 }
