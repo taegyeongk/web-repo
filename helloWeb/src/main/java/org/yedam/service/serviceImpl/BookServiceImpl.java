@@ -35,6 +35,7 @@ public class BookServiceImpl implements BookService {
 				vo.setBook_price(rs.getInt("book_price"));
 				list.add(vo);
 			}
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

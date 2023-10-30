@@ -11,21 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.yedam.service.BookVO;
-import org.yedam.service.MemberVO;
 import org.yedam.service.serviceImpl.BookServiceImpl;
-import org.yedam.service.serviceImpl.MemberServiceImpl;
 
 /**
  * Servlet implementation class BookListServlet
  */
 @WebServlet("/BookListServlet")
-public class BookListServlet extends HttpServlet {
+public class BookListServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public BookListServlet() {
+	public BookListServ() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -45,23 +43,27 @@ public class BookListServlet extends HttpServlet {
 
 		PrintWriter out = response.getWriter();
 
-		String str = "<dataset>";
 
-		for (BookVO vo : list) {
-			str += "<record>";
-			str += "<book_code>" + vo.getBook_code() + "</book_code>";
-			str += "<book_title>" + vo.getBook_title() + "</book_title>";
-			str += "<book_author>" + vo.getBook_author() + "</book_author>";
-			str += "<book_press>" + vo.getBook_press() + "</book_press>";
-			str += "<book_price>" + vo.getBook_price() + "</book_press>";
-			str += "</record>";
-		}
-		str += "</dataset>";
-
-		out.print(str);
-
-	}
-
+		String str = "";
+				
+				str += "[";
+				int cnt = 0;
+				for (BookVO vo : list) {
+					str += "{";
+					str += "\"bookcode\":\"" + vo.getBook_code() + "\",";
+					str += "\"booktitle\":\"" + vo.getBook_title()+ "\",";
+					str += "\"bookauthor\":\"" + vo.getBook_author() + "\",";
+					str += "\"bookpress\":\"" + vo.getBook_press() + "\",";
+					str += "\"bookprice\":\"" + vo.getBook_price() + "\"";
+					str += "}";
+					if (++cnt != list.size()) {
+						str += ",";
+					}
+				}
+				str += "]";
+				
+				out.print(str);
+			}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
