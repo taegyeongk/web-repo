@@ -5,12 +5,14 @@
 <title>test2.html</title>
 </head>
 <body>
+
 	<div id="show"></div>
-	<script src >
+	<script>
 
-const today = new Date();
+	const today = new Date();
 
-const novemberCal = {
+
+	const novemberCal = {
 
 	makeHead() {
 	const days = ['일', '월', '화', '수', '목', '금', '토']
@@ -21,30 +23,29 @@ const novemberCal = {
 
 	makeBody() {
 	let tbody = '</thead><tbody><tr>';
-		let styles = '';
-	for (let i = 1; i <= 31; i++) {
-		console.log(i);   //맞게 나오는중
-		if (i % 7 != 4) {
+		tbody += '<td></td>';
+		tbody += '<td></td>';
+		tbody += '<td></td>';
+		for(let i = 1; i<5; i++){
 			tbody += '<td>' + i + '</td>';
 		}
-		else if
-			(i % 7 == 4) {
-			tbody += '</tr><tr>';
+		tbody += '<tr></tr>';
+	for (let i = 5; i <31; i++) {
+			tbody += '<td>' + i + '</td>';
+		if(i % 7 == 4){
+			tbody += '<tr></tr>';
+			}
 		}
-		if (i % 7 == 0) {
-            tbody += '</tr><tr>';
-        }
-    }
         tbody += '</tr></tbody>';
 		return tbody;
 	},
 
 	makeCalendar() {
-	let thead = makeHead();
-	let tbody = makeBody();
+	let thead = this.makeHead();
+	let tbody = this.makeBody();
 	let table = '<table border="1">' + thead + tbody + '</table>'
 	document.getElementById('show').innerHTML = table;
-}
+	}
 }
 novemberCal.makeCalendar();
 
