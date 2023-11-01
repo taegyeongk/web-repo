@@ -55,7 +55,7 @@ function fetchCallback(result) {
 //}
 
 s
-function genTable(rawData = [], page = 57) {
+function genTable(rawData = [], page = 1) {
 	//초기화
 	document.querySelector('#show').innerHTML = '';
 	//10개 목록담으면 다음 페이지로 만드는법
@@ -66,9 +66,12 @@ function genTable(rawData = [], page = 57) {
 	//첫번째, 마지막 페이지 => 계산
 	let totalCnt = rawData.length;
 	let lastPage = Math.ceil(totalCnt / 5);
-	let endPage = Math.ceil(page / 5) * 5;   // Math.ceil : 올림\
-	let beginPage = endPage - 4;
-	let prevPage = false, nextPage = false;
+	//let endPage = Math.ceil(page / 5) * 5;   // Math.ceil : 올림\
+	let endPage = page + 2;
+	let beginPage = page -2;
+	//let beginPage = endPage - 4;
+	let prevPage,nextPage = false;
+	
 	if (beginPage > 1) {
 		prevPage = true;
 	}
@@ -92,7 +95,7 @@ function genTable(rawData = [], page = 57) {
 	}
 
 
-
+	//전체페이지
 	for (let i = beginPage; i <= endPage; i++) {
 		let aTag = document.createElement('a');
 		aTag.setAttribute('href', '#');
@@ -106,7 +109,7 @@ function genTable(rawData = [], page = 57) {
 		document.querySelector('.pagination').append(aTag);
 	}
 
-
+	//다음페이지
 	if (nextPage) {
 		let aTag = document.createElement('a');
 		aTag.setAttribute('href', '#');
@@ -139,6 +142,7 @@ function genTable(rawData = [], page = 57) {
 
 
 	let tbody = table.makeBody(mapData);  //[{},{},{}] : 배열안에 객체를 리턴해주는 값을 tbody로 선언
+	
 	let tbl = document.createElement('table');
 	tbl.setAttribute('border', '1');
 	tbl.append(thead, tbody);
