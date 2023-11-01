@@ -71,7 +71,9 @@ function genTable(rawData = [], page = 1) {
 	let beginPage = page -2;
 	//let beginPage = endPage - 4;
 	let prevPage,nextPage = false;
-	
+	if(beginPage < 1){
+		beginPage = page;
+	}
 	if (beginPage > 1) {
 		prevPage = true;
 	}
