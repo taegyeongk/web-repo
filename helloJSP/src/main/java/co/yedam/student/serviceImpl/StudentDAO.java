@@ -62,7 +62,7 @@ public class StudentDAO {
 
 	// 수정: update
 	public int update(StudentVO vo) {
-		String sql = "update student set student_name=?, student_password=?, student_dept=?, student_birthday=? where student_id=?";
+		String sql = "update student set student_name=?, student_password=?, student_dept=nvl(?, student_dept), student_birthday=? where student_id=?";
 		conn = ds.getConnection();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
