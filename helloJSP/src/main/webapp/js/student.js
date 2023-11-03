@@ -2,23 +2,59 @@
  *  js.student.js
  */
 
+import svc from './service.js';
 //페이지가 로딩되면서 바로 실행되는 코드
-fetch('../studentList.do')
-	.then(resolve => resolve.json())
-	.then(result => {
+
+//비동기방식코드 -> 순차적배치하여 가독성 높이기위한 방식(async, await)
+//async 함수(
+// await 처리.  (promise객체)
+// await 처리.
+// await 처리.
+//)
+//async function studentList() {  //순차적으로 처리를 하겠다는 뜻
+//	let req = await fetch('../studentList.do');
+//	let json = await req.json();  //{"retCode"":"OK""} -> {retCode:"OK"}
+//	let tbody = document.querySelector('#list');
+//	try {
+//	json.forEach(student => {
+//		tbody.append(makeTr(student));
+//		})
+//	} catch (err) {
+//		console.log('error=> ', err);
+//	}
+//}
+
+//위에랑 같은 코드
+svc.studentList(
+	//성공하면 실행하는 함수
+	result => {
 		console.log(result);
-		let tbody = document.querySelector('#list'); //id값이 list = tbody
+		let tbody = document.querySelector('#list');
 		result.forEach(student => {
 			tbody.append(makeTr(student));
 		})
-	})
-	.catch(err => console.log('error => ', err));
+	},
+	//실패하면 실행하는 함수
+	err => console.log('error => ', err)
+);
 
 //등록버튼 이벤트
 document.querySelector('#addBtn').addEventListener('click', addCallback);
 
 //수정버튼 이벤트.서블릿(db변경) -> 화면에서 출력되는 정보를 변경.
 document.querySelector('#modBtn').addEventListener('click', modCallback);
+
+//fetch('../studentList.do')
+//	.then(resolve => resolve.json())
+//	.then(result => {
+//		console.log(result);
+//		let tbody = document.querySelector('#list'); //id값이 list = tbody
+//		result.forEach(student => {
+//			tbody.append(makeTr(student));
+//		})
+//	})
+//	.catch(err => console.log('error => ', err));
+
 
 //callback 함수
 function addCallback(e) {
@@ -35,13 +71,15 @@ function addCallback(e) {
 	//get: url패턴. 값의 제한이 존재함.
 	//post: 파라미터 표현X, 값의 제한이 없음, content-type지정.
 	//fetch('../addStudent.do?' + param)랑 같은 구문 아래참조(패턴 기억해놓기!!)
-	fetch('../addStudent.do', {
-		method: 'post',  // *GET, POST, PUT, DELETE 등 방식 존재
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: param  // body의 데이터 유형은 반드시 "Content-Type" 헤더와 일치해야 함
-	})
-		.then(resolve => resolve.json())
-		.then(result => {
+	svc.addStudent(  //첫번째 파라메터가 실행할 함수
+		//optObj =>
+		{
+			method: 'post',  // *GET, POST, PUT, DELETE 등 방식 존재
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: param
+		},
+		//successCallback =>
+		result => {
 			if (result.retCode == 'OK') {
 				alert('성공');
 				let tr = makeTr({ studentId: sid, studentName: sname, studentBirthday: bir });
@@ -49,8 +87,27 @@ function addCallback(e) {
 			} else {
 				alert('실패');
 			}
-		})
-		.catch(err => console.log('error: ', err));
+		},
+		//errorCallback =>
+		err => console.log('error: ', err)
+	);
+
+	//fetch('../addStudent.do', {
+	//		method: 'post',  // *GET, POST, PUT, DELETE 등 방식 존재
+	//		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	//		body: param  // body의 데이터 유형은 반드시 "Content-Type" 헤더와 일치해야 함
+	//	})
+	//	.then(resolve => resolve.json())
+	//		.then(result => {
+	//		if (result.retCode == 'OK') {
+	//				alert('성공');
+	//				let tr = makeTr({ studentId: sid, studentName: sname, studentBirthday: bir });
+	//				document.querySelector('#list').append(tr);
+	//			} else {
+	//				alert('실패');
+	//			}
+	//		})
+	//		.catch(err => console.log('error: ', err));
 }
 
 function modCallback(e) {
@@ -61,19 +118,20 @@ function modCallback(e) {
 	let param = `id=${sid}&name=${sname}&pass=${pass}&bir=${bir}`;
 	console.log(param);
 
-
-	fetch('../editStudent.do', {
-		method: 'post',
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: param
-	})
-		.then(resolve => resolve.json())
-		.then(result => {
+	svc.editStudent(
+		//1) optObj
+		{
+			method: 'post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: param
+		},
+		//2) successCall
+		result => {
 			console.log(result);
 			if (result.retCode == 'OK') {
 				alert('성공');
 				result.vo.studentId;
-				let targetTr = document.querySelector('tr[data-sid='+ result.vo.studentId+']');
+				let targetTr = document.querySelector('tr[data-sid=' + result.vo.studentId + ']');
 				let newTr = makeTr(result.vo);
 				let parentElement = document.querySelector('#list');
 				parentElement.replaceChild(newTr, targetTr);   //replaceChild: 부모요소에서 자식요소로 변경할때 쓰는 메소드
@@ -81,9 +139,34 @@ function modCallback(e) {
 			} else {
 				alert('실패');
 			}
-		})
+		},
+		//3) errorCall
+		err => console.log('error=> ', err)
+	);
 
-		.catch(err => console.log('error: ', err));
+
+	//fetch('../editStudent.do', {
+	//		method: 'post',
+	//		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	//		body: param
+	//	})
+	//		.then(resolve => resolve.json())
+	//	.then(result => {
+	//		console.log(result);
+	//		if (result.retCode == 'OK') {
+	//			alert('성공');
+	//			result.vo.studentId;
+	//			let targetTr = document.querySelector('tr[data-sid=' + result.vo.studentId + ']');
+	//			let newTr = makeTr(result.vo);
+	//			let parentElement = document.querySelector('#list');
+	//			parentElement.replaceChild(newTr, targetTr);   //replaceChild: 부모요소에서 자식요소로 변경할때 쓰는 메소드
+	//			document.getElementById("myModal").style.display = 'none';  //변경 성공하면 모달창 닫는 기능.
+	//		} else {
+	//			alert('실패');
+	//		}
+	//	})
+
+	//	.catch(err => console.log('error: ', err));
 }
 
 
@@ -105,20 +188,32 @@ function makeTr(obj) {
 	btn.setAttribute('data-sid', obj.studentId);
 	btn.innerHTML = '삭제';
 	btn.addEventListener('click', function(e) {
-		//ajax 호출  -> 서블릿 실행
-		fetch('../delStudent.do?sid=' + obj.studentId)
-			.then(resolve => resolve.json())
-			.then(result => {
-				console.log(result);
-				//정상적으로 잘 받아지면 서버에서도 지워짐
+
+		svc.removeStudent(
+			obj.studentId,
+			result => {
 				if (result.retCode == 'OK') {
 					alert('삭제성공');
 					tr.remove();
 				} else {
-					alert('삭제실패ㅋ');
+					alert('삭제실패');
 				}
-			})
-			.catch(err => console.log('error: ', err));
+			}, err => console.log('error: ', err)
+		)
+		//ajax 호출  -> 서블릿 실행
+		//				fetch('../delStudent.do?sid=' + obj.studentId)
+		//					.then(resolve => resolve.json())
+		//					.then(result => {
+		//						console.log(result);
+		//						//정상적으로 잘 받아지면 서버에서도 지워짐
+		//						if (result.retCode == 'OK') {
+		//							alert('삭제성공');
+		//							tr.remove();
+		//						} else {
+		//							alert('삭제실패');
+		//						}
+		//					})
+		//					.catch(err => console.log('error: ', err));
 	})
 	td.append(btn);
 	tr.append(td);
@@ -149,13 +244,10 @@ function showModal(e) {
 			modal.style.display = "none";
 		}
 	}
-
-	fetch("../getStudent.do?sid=" + id)
-		.then(resolve => resolve.json())
-		.then(result => {
-			// Get the modal
+	svc.getStudent(
+		id,
+		result => {
 			modal.style.display = "block";
-			//let data = { id: "std1", name: "홍길동", pass: "1234", bir: "2001-01-14" }
 
 			modal.querySelector('h2').innerHTML = result.studentName;
 			modal.querySelector('input[name=pass]').value = result.studentPassword;
@@ -163,6 +255,23 @@ function showModal(e) {
 			modal.querySelector('input[name=bir]').value = result.studentBirthday;
 			modal.querySelector('input[name=sid]').value = result.studentId;
 			// Get the <span> element that closes the modal
-		})
+		},
+		err => console.log('error: ', err)
+	)
 
+	//			fetch("../getStudent.do?sid=" + id)
+	//				.then(resolve => resolve.json())
+	//				.then(result => {
+	//					// Get the modal
+	//					modal.style.display = "block";
+	//					//let data = { id: "std1", name: "홍길동", pass: "1234", bir: "2001-01-14" }
+	//
+	//					modal.querySelector('h2').innerHTML = result.studentName;
+	//					modal.querySelector('input[name=pass]').value = result.studentPassword;
+	//					modal.querySelector('input[name=name]').value = result.studentName;
+	//					modal.querySelector('input[name=bir]').value = result.studentBirthday;
+	//					modal.querySelector('input[name=sid]').value = result.studentId;
+	//					// Get the <span> element that closes the modal
+	//				})
+	//
 } //end of function
