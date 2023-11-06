@@ -14,6 +14,10 @@ import co.yedam.board.web.AddBoardControl;
 import co.yedam.board.web.BoardFormControl;
 import co.yedam.board.web.BoardListControl;
 import co.yedam.board.web.GetBoardControl;
+import co.yedam.board.web.ModifyBoardControl;
+import co.yedam.board.web.ModifyFormControl;
+import co.yedam.board.web.RemoveBoardControl;
+import co.yedam.board.web.RemoveFormControl;
 
 public class FrontController extends HttpServlet {
 	Map<String, Command> map = new HashMap<>();
@@ -21,14 +25,38 @@ public class FrontController extends HttpServlet {
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
+		//메인페이지		
+		map.put("/main.do",new MainControl());
+		
+		
+		//로그인.
+		map.put("/loginForm.do", new LoginFormControl());
+		map.put("/login.do", new LoginControl());
+		map.put("/logout.do", new LogoutControl());
+		
+		//회원목록
+		map.put("/memberList.do", new MemberListControl());
+	
 		map.put("/boardList.do",new BoardListControl());
-		map.put("/getBoard.do",new GetBoardControl());
+		map.put("/getBoard.do",new GetBoardControl());  //상세화면
+		//등록화면
 		map.put("/boardForm.do",new BoardFormControl());
 		map.put("/addBoard.do",new AddBoardControl());
+		//수정화면
+		map.put("/modifyForm.do", new ModifyFormControl());
+		map.put("/modifyBoard.do", new ModifyBoardControl());
+		//삭제화면
+		map.put("/removeForm.do", new RemoveFormControl());
+		map.put("/removeBoard.do", new RemoveBoardControl());
 	}
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//요청정보의 한글 인코딩 방식.
+		req.setCharacterEncoding("utf-8");
+		
+		
+		
 		System.out.println("FrontController");
 		String uri = req.getRequestURI(); // 어떤 페이지 요청을 반환하는지 getRequestURI로 http://localhost:8080/helloJSP/??.do 에서
 											// 서버정보를 뺀 뒷부분이 uri임.

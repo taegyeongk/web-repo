@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.yedam.board.service.BoardVO;
+import co.yedam.board.service.MemberVO;
 import co.yedam.common.DataSource;
 import co.yedam.student.service.StudentVO;
 
@@ -94,13 +95,14 @@ public class BoardDAO {
 	}
 
 	public int insert(BoardVO vo) {
-		String sql = "insert into board(board_no,title,content, writer) values(seq_board.nextval,?,?,?)";
+		String sql = "insert into board(board_no,title,content, writer, image) values(seq_board.nextval,?,?,?,?)";
 		conn = ds.getConnection();
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, vo.getTitle());
 			psmt.setString(2, vo.getContent());
 			psmt.setString(3, vo.getWriter());
+			psmt.setString(4, vo.getImage());
 			int r = psmt.executeUpdate();
 			return r;
 
@@ -114,18 +116,14 @@ public class BoardDAO {
 	}
 
 	public int update(BoardVO vo) {
-		String sql = "update board set title=?,content=?, image=nvl(?,image), "
-				+ "last_update=sysdate where board_no=?";
+		String sql = "update board set title=?,content=?, image=nvl(?,image),last_update=sysdate where board_no=?";
 		conn = ds.getConnection();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			int rowNo = 1;
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, vo.getTitle());
 			psmt.setString(2, vo.getContent());
 			psmt.setString(3, vo.getImage());
-			psmt.setString(4, sdf.format(vo.getLastUpdate()));
-			psmt.setInt(5, vo.getBoardNo());
+			psmt.setInt(4, vo.getBoardNo());
 			int r = psmt.executeUpdate();
 			return r;
 		} catch (SQLException e) {
@@ -169,6 +167,76 @@ public class BoardDAO {
 			close();
 		}
 		return 0;
+
+	}
+	
+	//아이디, 비번 => 조회값 boolean.
+//	public boolean getUser(String id, String pw) {
+//		sql = "select * from member where mid=? and pass=?";  //아이디와 비번이 맞으면 true 반환 틀리면 false반환
+//		conn = ds.getConnection();
+//		try {
+//			psmt = conn.prepareStatement(sql);
+//			psmt.setString(1, id);
+//			psmt.setString(2, pw);
+//			rs = psmt.executeQuery();
+//			if(rs.next()) {
+//				return true;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			close();
+//		}
+//		return false;
+//	}
+	
+	public MemberVO getUser(String id, String pw) {
+		System.out.println(id+ " + " + pw);
+		sql = "select * from member where mid=? and pass=?";
+		conn = ds.getConnection();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, pw);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setMid(rs.getString("mid"));
+				vo.setPass(rs.getString("pass"));
+				vo.setName(rs.getString("name"));
+				vo.setPhone(rs.getString("phone"));
+				vo.setResponsibility(rs.getString("responsibility"));
+				return vo;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return null;
+		
+	}
+	
+	public List<MemberVO> memberList(){
+		sql = "select * from member";
+		conn = ds.getConnection();
+		List<MemberVO> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setMid(rs.getString("mid"));
+				vo.setName(rs.getString("name"));
+				vo.setPhone(rs.getString("phone"));
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return list;
 
 	}
 }

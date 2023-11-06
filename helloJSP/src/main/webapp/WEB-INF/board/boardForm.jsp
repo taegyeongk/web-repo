@@ -1,33 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>boardForm.jsp</title>
-</head>
-<body>
+<%@include file="../layout/menu.jsp"%>
+<%@include file="../layout/header.jsp"%>
+
 	<h3>게시글 등록화면</h3>
-	<form action="addBoard.do" method="post">  <!-- 따로 정의 안하면 get , post는 제한없이 가능 -->
-		<table border="1">
+	<form action="addBoard.do" method="post" enctype="multipart/form-data">
+		<!-- 따로 정의 안하면 get , post는 제한없이 가능 -->
+		<table class="table">
 			<tr>
-				<th>제목</th>
-				<td><input type="text" name="title"></td>
+				<th>글제목</th>
+				<td><input type="text" class="form-control" name="title"></td>
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td><input type="text" name="writer"></td>
+				<td><input type="text" name="writer"  value="<%=logId %>" readonly class="form-control"></td>
 			</tr>
 			<tr>
-				<td colspan="2"><textarea cols="40" rows="5" name="content"></textarea></td>
+				<td colspan="2"><textarea cols="31" rows="6" name="content"
+						class="form-control"></textarea></td>
 			</tr>
 			<tr>
-				<td colspan="2">
-				<input type="submit" value="저장">
-				<input type="reset" value="초기화">
-				</td>
+				<th>파일명</th>
+				<td><input type="file" name="img" class="form-control">
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input type="submit" value="저장"
+					class="btn btn-primary"> <input type="reset" value="초기화"
+					class="btn btn-warning"></td>
 			</tr>
 		</table>
 	</form>
 </body>
+<%@include file="../layout/footer.jsp"%>
 </html>
