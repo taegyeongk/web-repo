@@ -30,6 +30,4 @@
 			</tr>
 		</table>
 	</form>
-</body>
 <%@include file="../layout/footer.jsp"%>
-</html>
