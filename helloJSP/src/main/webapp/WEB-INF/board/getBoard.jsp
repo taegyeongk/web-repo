@@ -51,16 +51,13 @@ BoardVO vo = (BoardVO) request.getAttribute("bno");
 		</tr>
 		<tr>
 			<td colspan="4" align="center">
-				<%
-				if (logId != null && logId.equals(vo.getWriter())) {
-				%> <input type="submit" value="수정" class="btn btn-primary">
-				<input type="button" value="삭제" class="btn btn-warning"> <%
- } else {
- %> <input disabled type="submit" class="btn btn-primary" value="수정">
-				<input disabled type="button" class="btn btn-warning" value="삭제">
-				<%
-				}
-				%>
+<%if (logId != null && logId.equals(vo.getWriter())) {%> 
+	<input type="submit" value="수정" class="btn btn-primary">		
+	<input type="button" value="삭제" class="btn btn-warning"> <%
+ } else {%> 
+ 	<input disabled type="submit" class="btn btn-primary" value="수정">
+	<input disabled type="button" class="btn btn-warning" value="삭제">
+<%}%>
 			</td>
 		</tr>
 	</table>
@@ -76,7 +73,7 @@ BoardVO vo = (BoardVO) request.getAttribute("bno");
 </table>
 <h3>댓글목록</h3>
 <ul id="list">
-	<li style="display: none;" id="template"><span>00</span><b>첫번째글입니다.</b><span>user01</span><span>2023-11-07</span></li>
+	<li style="display: none;" id="template"><span>00</span><b>첫번째글입니다.</b><span>user01</span><span>2023-11-07</span><button>삭제</button></li>
 
 </ul>
 <p>

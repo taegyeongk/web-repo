@@ -16,13 +16,13 @@
 </head>
 <body>
 	<%
-    String logId = (String) session.getAttribute("logId");
+    String logId = (String) session.getAttribute("logId");  //세션 가져오기
     String responsibility = (String) session.getAttribute("responsibility");
     %>
 	<div class="d-flex" id="wrapper">
 		<!-- Sidebar-->
 		<div class="border-end bg-white" id="sidebar-wrapper">
-			<%if (logId ==null){ %>
+			<%if (logId == null){ %>
 			<div class="sidebar-heading border-bottom bg-light">(Guest) 입니다.</div>
 			<%} else{ %>
 			<div class="sidebar-heading border-bottom bg-light">(<%=logId %>)환영합니다.</div>			
