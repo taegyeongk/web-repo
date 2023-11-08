@@ -4,14 +4,27 @@
 
 	<select id="replyList"
 		resultType="co.yedam.reply.service.ReplyVO">
-		SELECT * FROM reply where board_no =#{boardNo}
+		<![CDATA[  
+		
+		select * 
+		from (
+		select /*+INDEX(r reply_pk)*/ rownum rn,r.*
+		from reply r
+		where r.board_no = #{boardNo}
+		)a
+
+		where a.rn > (#{page} - 1 ) * 5
+		and a.rn <= (#{page}) * 5
+		]]>
 	</select>
 
-	<insert id="insertReply" parameterType="co.yedam.reply.service.ReplyVO">
-		<selectKey keyProperty="replyNo" resultType="int" order="BEFORE">
+	<insert id="insertReply"
+		parameterType="co.yedam.reply.service.ReplyVO">
+		<selectKey keyProperty="replyNo" resultType="int"
+			order="BEFORE">
 			select seq_reply.nextval from dual
 		</selectKey>
-		
+
 		insert into reply(reply_no, board_no, reply, replyer, reply_date)
 		values(#{replyNo},#{boardNo},#{reply},#{replyer},#{replyDate})
 	</insert>
@@ -19,12 +32,21 @@
 
 	<update id="updateReply"
 		parameterType="co.yedam.reply.service.ReplyVO">
-		update reply set reply=#{{reply} where reply_no=#{replyNo}
+		update reply set reply=#{{reply} where
+		reply_no=#{replyNo}
 	</update>
 
 	<delete id="deleteReply" parameterType="int">
-		delete from reply where reply_no=#{replyNo}
+		delete from reply where
+		reply_no=#{replyNo}
 	</delete>
+	<select id="getTotalCnt" resultType="int">
+		select count(*) from reply where board_no = #{boardNo}
+	</select>
 
-
+	<select id="getReplyCountByWriter" resultType="map">
+		select replyer, count(*) cnt
+		from reply
+		group by replyer
+	</select>
 </mapper>

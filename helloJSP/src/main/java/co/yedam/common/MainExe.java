@@ -1,6 +1,7 @@
 package co.yedam.common;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -14,11 +15,11 @@ public class MainExe {
 		SqlSession session = DataSourceMybatis.getInstance().openSession(true);
 		ReplyMapper mapper = session.getMapper(ReplyMapper.class);
 		
-		List<ReplyVO> list = mapper.replyList(1); //1번 글에대한 목록을 가져옴
-		list.forEach(vo -> System.out.println(vo));
-		
-		
-		
+		//List<ReplyVO> list = mapper.replyList(1); //1번 글에대한 목록을 가져옴
+		//list.forEach(vo -> System.out.println(vo));
+		mapper.replyList(2, 1).forEach(rep -> System.out.println(rep));
+		List<Map<String, Object>> map = mapper.getReplyCountByWriter();
+		System.out.println(map);
 	}
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //		BoardVO vo = new BoardVO();

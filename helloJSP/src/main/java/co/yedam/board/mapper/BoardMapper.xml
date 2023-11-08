@@ -38,8 +38,7 @@
 		mid=#{id} and pass=#{pw}
 	</select>
 
-	<select id="memberlist"
-		resultType="co.yedam.board.service.MemberVO">
+	<select id="memberList" resultType="co.yedam.board.service.MemberVO">
 		select * from member order by 1
 	</select>
 </mapper>
