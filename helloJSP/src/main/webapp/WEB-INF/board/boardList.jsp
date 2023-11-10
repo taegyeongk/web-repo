@@ -37,4 +37,3 @@
 		<a href="boardForm.do">등록화면</a>
 	</p>
 	<jsp:include page="../layout/footer.jsp"></jsp:include>
-</html>

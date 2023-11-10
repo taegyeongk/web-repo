@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper SYSTEM "path/mybatis-3-mapper.dtd">
+<mapper namespace="item.mapper.ItemMapper">
+	<select id="selectList" resultType="item.service.ItemVO">
+	SELECT * FROM tbl_product order by PROD_CODE
+	</select>
+	<select id="select" resultType="item.service.ItemVO">
+	select * from tbl_product where prod_code=#{prod_code}
+	</select>
+</mapper>
