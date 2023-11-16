@@ -1,9 +1,9 @@
-package item.service;
+package co.yedam.product.service;
 
 import lombok.Data;
 
 @Data
-public class ItemVO {
+public class ProductVO {
 	private String prod_code;
 	private String prod_name;
 	private String prod_desc;

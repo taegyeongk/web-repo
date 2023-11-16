@@ -1,4 +1,4 @@
-package item.common;
+package co.yedam.product.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

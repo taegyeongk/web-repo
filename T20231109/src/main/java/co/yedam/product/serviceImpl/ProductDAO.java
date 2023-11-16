@@ -1,4 +1,4 @@
-package item.serviceImpl;
+package co.yedam.product.serviceImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import item.common.DataSource;
-import item.service.ItemVO;
+import co.yedam.product.common.DataSource;
+import co.yedam.product.service.ProductVO;
 
-public class ItemDAO {
+public class ProductDAO {
 	Connection conn;
 	PreparedStatement psmt;
 	ResultSet rs;
@@ -34,15 +34,15 @@ public class ItemDAO {
 		}
 	}
 	
-	public List<ItemVO> selectList(){
+	public List<ProductVO> selectList(){
 		sql = "select * from tbl_product";
 		conn = ds.getConnection();
-		List<ItemVO> list = new ArrayList<>();
+		List<ProductVO> list = new ArrayList<>();
 		try {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
-				ItemVO vo = new ItemVO();
+				ProductVO vo = new ProductVO();
 				vo.setProd_code(rs.getString("prod_code"));
 				vo.setProd_name(rs.getString("prod_name"));
 				vo.setProd_desc(rs.getString("prod_desc"));

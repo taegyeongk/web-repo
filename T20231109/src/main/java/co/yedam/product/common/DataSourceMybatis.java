@@ -1,4 +1,4 @@
-package item.common;
+package co.yedam.product.common;
 
 import java.io.IOException;
 import java.io.InputStream;
